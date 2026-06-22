@@ -47,7 +47,7 @@ export default function MyTasks({ tasks }) {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 pt-15 lg:pt-10">
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>

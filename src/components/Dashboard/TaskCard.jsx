@@ -65,7 +65,7 @@ export default function TaskCard({ task }) {
     <>
       {/* Back + title */}
 
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-6 mt-6">
         <button onClick={() => router.back()}>
           <FiArrowLeft className="text-xl" />
         </button>

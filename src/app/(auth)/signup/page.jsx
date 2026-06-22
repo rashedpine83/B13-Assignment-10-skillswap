@@ -195,6 +195,13 @@ export default function SignupPage() {
           />
           <span className="ml-2">Continue with Google</span>
         </Button>
+        {/* DIVIDER */}
+      <div className="relative my-6">
+        <div className="border-t border-zinc-200"></div>
+        <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-xs text-zinc-500">
+          or sign in with email
+        </span>
+      </div>
         {/* FORM */}
         <form onSubmit={handleSignup} className="space-y-5 mt-6">
           {/* NAME */}
