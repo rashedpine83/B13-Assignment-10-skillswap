@@ -125,8 +125,7 @@ export default function SigninPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
-
+    <div className="max-w-3xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
       {/* LOGO */}
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
@@ -163,7 +162,6 @@ export default function SigninPage() {
 
       {/* FORM */}
       <form onSubmit={handleSignin} className="space-y-5">
-
         {/* EMAIL */}
         <TextField>
           <Label>Email</Label>
@@ -238,13 +236,10 @@ export default function SigninPage() {
             </span>
           </Link>
         </div>
-
       </form>
     </div>
   );
 }
-
-
 
 // "use client";
 

@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { PiSignOutBold } from "react-icons/pi";
+import { BiEdit } from "react-icons/bi";
 
 /* ✅ SIMPLE 3-LINE HAMBURGER ICON */
 function MenuIcon() {
@@ -48,7 +49,7 @@ export function DashboardSidebar() {
     { icon: QrCode, href: "/dashboard/freelancer", label: "Overview" },
     {
       icon: Magnifier,
-      href: "/dashboard/freelancer/browse-tasks",
+      href: "/browse-tasks",
       label: "Browse Tasks",
     },
     {
@@ -59,12 +60,17 @@ export function DashboardSidebar() {
     {
       icon: Briefcase,
       href: "/dashboard/freelancer/active-projects",
-      label: "Projects",
+      label: "Active Projects",
     },
     {
       icon: DollarSign,
       href: "/dashboard/freelancer/earnings",
       label: "Earnings",
+    },
+    {
+      icon: BiEdit,
+      href: "/dashboard/freelancer/profile",
+      label: "Edit Profile",
     },
   ];
 
@@ -97,19 +103,19 @@ export function DashboardSidebar() {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
-       {/* LOGO */}
-        <div className="flex-shrink-0 pt-6 pb-10 ">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="leading-none">
-              <Image
-                src="/images/logo1.png"
-                alt="logo"
-                width={130}
-                height={130}
-              />
-            </div>
-          </Link>
-        </div>
+      {/* LOGO */}
+      <div className="flex-shrink-0 pt-6 pb-10 ">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="leading-none">
+            <Image
+              src="/images/logo1.png"
+              alt="logo"
+              width={130}
+              height={130}
+            />
+          </div>
+        </Link>
+      </div>
       {/* MENU */}
       <div className="flex-1 overflow-y-auto">
         <nav className="space-y-2">

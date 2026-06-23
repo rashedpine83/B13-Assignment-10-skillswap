@@ -1,77 +1,28 @@
 import { FiFileText, FiSearch } from "react-icons/fi";
 import Link from "next/link";
-import { getProposals } from "@/lib/api/proposals";
+import { getAllMyProposals } from "@/lib/api/proposals";
 import { getUserSession } from "@/lib/core/session";
 
-export default async function FreelancerOverview() {
+export default async function MyProposalsPage() {
   const user = await getUserSession();
 
-  const res = await getProposals(user._id);
+  const res = await getAllMyProposals(user._id);
   const proposals = res || [];
-
-  // ===== STATS =====
-  const totalProposals = proposals.length;
-
-  const pendingProposals = proposals.filter(
-    (p) => p.status === "pending",
-  ).length;
-
-  const acceptedProposals = proposals.filter(
-    (p) => p.status === "accepted",
-  ).length;
-
-  const totalEarned = proposals
-    .filter((p) => p.status === "accepted")
-    .reduce((sum, p) => sum + Number(p.proposedBudget || 0), 0);
 
   return (
     <div className="p-6">
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Freelancer Dashboard</h1>
+          <h1 className="text-2xl font-bold">My Proposals</h1>
           <p className="text-gray-500 text-sm">
-            Track your proposals and earnings
+            {proposals.length} proposal submitted
           </p>
-        </div>
-
-        <Link
-          href="/browse-tasks"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium
-          bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-105 transition"
-        >
-          <FiSearch />
-          Browse Tasks
-        </Link>
-      </div>
-
-      {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-        <div className="bg-white p-5 rounded-2xl border">
-          <p className="text-gray-500 text-sm">Total Proposals</p>
-          <h2 className="text-2xl font-bold">{totalProposals}</h2>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border">
-          <p className="text-gray-500 text-sm">Pending</p>
-          <h2 className="text-2xl font-bold">{pendingProposals}</h2>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border">
-          <p className="text-gray-500 text-sm">Accepted</p>
-          <h2 className="text-2xl font-bold">{acceptedProposals}</h2>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border">
-          <p className="text-gray-500 text-sm">Earned</p>
-          <h2 className="text-2xl font-bold">${totalEarned}</h2>
         </div>
       </div>
 
       {/* RECENT PROPOSALS */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-4">Recent Proposals</h2>
-
         {proposals.length === 0 ? (
           <div className="bg-white border rounded-2xl p-10 text-center">
             <FiFileText className="mx-auto text-gray-400 mb-3" size={30} />

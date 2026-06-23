@@ -19,6 +19,10 @@ export const serverMutation = async (path, data, method = "POST") => {
 
 export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`);
-  // handle 401, 404, 403
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
   return await res.json();
 };

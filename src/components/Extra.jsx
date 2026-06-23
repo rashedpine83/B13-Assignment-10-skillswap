@@ -1,4 +1,16 @@
- {/* MOBILE MENU BUTTON */}
+import { getSingleTask } from "@/lib/api/tasks";
+import { getUserSession } from "@/lib/core/session";
+
+const TaskDetailsPage = async ({ params }) => {
+  const { id } = await params;
+
+  const task = await getSingleTask(id);
+
+  const user = await getUserSession();
+  // ✅ GET USER SESSION
+
+
+{/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex items-center justify-center rounded-lg p-2 text-white transition hover:bg-white/10 md:hidden"

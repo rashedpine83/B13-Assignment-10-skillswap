@@ -35,7 +35,7 @@ export default function BrowseTasksClient({ tasks }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="container mx-auto px-6 py-8">
       {/* Header */}
 
       <h1 className="text-4xl font-bold">Browse Tasks</h1>

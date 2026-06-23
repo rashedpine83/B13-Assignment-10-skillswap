@@ -15,12 +15,13 @@ import {
 import { Eye, EyeSlash, Person, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { authClient, signUp } from "@/lib/auth-client";
 import Image from "next/image";
+import { createUser } from "@/lib/actions/users";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
 
   const [role, setRole] = useState("client");
 
@@ -78,34 +79,89 @@ export default function SignupPage() {
     }
 
     try {
+      const skillsArray =
+        role === "freelancer"
+          ? skills
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean) // remove empty
+          : [];
+
       const userData = {
         name,
         email,
         password,
         role,
-        imageUrl,
         callbackURL: "/",
       };
 
       if (role === "freelancer") {
-        userData.skills = skills.split(",").map((item) => item.trim());
-        userData.bio = bio;
-        userData.hourlyRate = hourlyRate;
+        userData.skills = skillsArray;
+        userData.bio = bio.trim();
+        userData.hourlyRate = Number(hourlyRate) || 0;
       }
 
       const { error: authError } = await signUp.email(userData);
 
       if (authError) {
         setErrors({ form: authError.message });
-      } else {
-        setSuccess("Account created successfully");
+        setIsLoading(false);
+        return;
       }
-    } catch {
-      setErrors({ form: "Something went wrong" });
-    }
 
-    setIsLoading(false);
+      // IMPORTANT: store SAME cleaned data in DB
+      await createUser({
+        name,
+        email,
+        role,
+        skills: skillsArray,
+        bio: bio.trim(),
+        hourlyRate: Number(hourlyRate) || 0,
+      });
+
+      setSuccess("Account created successfully");
+    } catch (error) {
+      console.log("SIGNUP ERROR:", error);
+      setErrors({
+        form: error?.message || "Something went wrong",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  //   try {
+  //     const userData = {
+  //       name,
+  //       email,
+  //       password,
+  //       role,
+  //       imageUrl,
+  //       skills,
+  //       bio,
+  //       hourlyRate,
+  //       callbackURL: "/",
+  //     };
+
+  //     if (role === "freelancer") {
+  //       userData.skills = skills.split(",").map((item) => item.trim());
+  //       userData.bio = bio;
+  //       userData.hourlyRate = hourlyRate;
+  //     }
+
+  //     const { error: authError } = await signUp.email(userData);
+
+  //     if (authError) {
+  //       setErrors({ form: authError.message });
+  //     } else {
+  //       setSuccess("Account created successfully");
+  //     }
+  //   } catch {
+  //     setErrors({ form: "Something went wrong" });
+  //   }
+
+  //   setIsLoading(false);
+  // };
 
   // GOOGLE SIGNUP
   const handleGoogleSignUp = async () => {
@@ -196,12 +252,12 @@ export default function SignupPage() {
           <span className="ml-2">Continue with Google</span>
         </Button>
         {/* DIVIDER */}
-      <div className="relative my-6">
-        <div className="border-t border-zinc-200"></div>
-        <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-xs text-zinc-500">
-          or sign in with email
-        </span>
-      </div>
+        <div className="relative my-6">
+          <div className="border-t border-zinc-200"></div>
+          <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-white px-3 text-xs text-zinc-500">
+            or sign in with email
+          </span>
+        </div>
         {/* FORM */}
         <form onSubmit={handleSignup} className="space-y-5 mt-6">
           {/* NAME */}
@@ -274,7 +330,7 @@ export default function SignupPage() {
           </TextField>
 
           {/* IMAGE URL ✅ NEW */}
-          <TextField>
+          {/* <TextField>
             <Label>
               Image URL <span className="text-red-500">*</span>
             </Label>
@@ -289,7 +345,7 @@ export default function SignupPage() {
             {errors.imageUrl && (
               <p className="text-red-500 text-sm">{errors.imageUrl}</p>
             )}
-          </TextField>
+          </TextField> */}
 
           {/* FREELANCER */}
           {role === "freelancer" && (
