@@ -12,3 +12,7 @@ export const getAllMyProposals = async () => {
 export const getProposalsByEmail = async (email) => {
   return serverFetch(`/api/proposals/email?email=${encodeURIComponent(email)}`);
 };
+
+export const getProposalsByTaskId = async (taskId) => {
+  return serverFetch(`/api/proposals/${encodeURIComponent(taskId)}`);
+};

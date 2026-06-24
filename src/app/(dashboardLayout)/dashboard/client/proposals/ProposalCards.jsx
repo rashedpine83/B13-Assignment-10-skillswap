@@ -56,7 +56,7 @@ export default function ProposalCards({ proposals }) {
 
             <div className="flex-1">
               <div className="flex items-center gap-3">
-                <h2 className="font-bold text-lg">{p.title}</h2>
+                <h2 className="font-bold text-lg">{p.taskTitle}</h2>
 
                 <span
                   className={`

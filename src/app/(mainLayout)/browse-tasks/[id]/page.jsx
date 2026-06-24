@@ -99,7 +99,9 @@ const TaskDetailsPage = async ({ params }) => {
         ) : (
           <ProposalForm
             taskId={task._id}
+            taskTitle={task.title}
             freelancerId={user._id}
+            freelancerEmailId={user?.email}
             clientEmailId={task.emailId}
             alreadySubmitted={task.alreadySubmitted}
           />

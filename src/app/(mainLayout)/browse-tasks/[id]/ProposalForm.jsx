@@ -6,7 +6,9 @@ import { createProposal } from "@/lib/actions/proposal";
 
 export default function ProposalForm({
   taskId,
+  taskTitle,
   freelancerId,
+  freelancerEmailId,
   clientEmailId,
   alreadySubmitted = false,
 }) {
@@ -32,8 +34,10 @@ export default function ProposalForm({
       const proposalData = {
         ...form,
         taskId,
+        taskTitle,
         freelancerId,
         clientEmailId,
+        freelancerEmailId,
         status: "pending",
       };
 
