@@ -30,9 +30,7 @@ export default function ProposalCards({ proposals }) {
   };
 
   const handleAccept = (proposal) => {
-    router.push(`/payment/${proposal._id}`);
-
-    // Later connect Stripe checkout here
+    router.push(`/dashboard/client/proposals/${proposal._id}`);
   };
 
   return (
@@ -118,6 +116,7 @@ export default function ProposalCards({ proposals }) {
             {p.status === "pending" && (
               <div className="flex gap-3 items-start">
                 <button
+                  type="submit"
                   onClick={() => handleAccept(p)}
                   className="
                   bg-green-500

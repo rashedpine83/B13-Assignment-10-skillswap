@@ -9,10 +9,11 @@ export const serverMutation = async (path, data, method = "POST") => {
     body: data ? JSON.stringify(data) : null,
   });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text);
-  }
+  // if (!res.ok) {
+  //   const text = await res.text();
+  //   throw new Error(text);
+  // }
+  console.log(res);
 
   return await res.json();
 };
@@ -21,7 +22,12 @@ export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`);
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    const error = await res.text();
+
+    console.log("Status:", res.status);
+    console.log("Response:", error);
+
+    throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
   }
 
   return await res.json();

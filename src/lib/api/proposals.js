@@ -16,3 +16,7 @@ export const getProposalsByEmail = async (email) => {
 export const getProposalsByTaskId = async (taskId) => {
   return serverFetch(`/api/proposals/${encodeURIComponent(taskId)}`);
 };
+
+export const getProposalsById = async (id) => {
+  return serverFetch(`/api/proposal/${id}`);
+};
