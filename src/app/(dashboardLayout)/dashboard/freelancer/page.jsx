@@ -98,7 +98,10 @@ export default async function FreelancerOverview() {
               >
                 {/* LEFT SIDE */}
                 <div>
-                  <h3 className="font-semibold">Note: {p.coverNote}</h3>
+                  <h3 className="font-semibold text-2xl text-cyan-500">
+                    {" "}
+                    {p.taskTitle}
+                  </h3>
 
                   <p className="text-sm text-gray-500">
                     Budget: ${p.proposedBudget} • {p.estimatedDays} days

@@ -23,7 +23,7 @@ const TaskDetailsPage = async ({ params }) => {
   return (
     <div className="max-w-4xl mx-auto p-5">
       <Link
-        href="/tasks"
+        href="/browse-tasks"
         className="flex items-center gap-2 mb-6 text-cyan-600 hover:text-purple-600"
       >
         <FiArrowLeft />

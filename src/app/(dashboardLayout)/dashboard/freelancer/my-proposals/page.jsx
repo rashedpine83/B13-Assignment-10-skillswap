@@ -8,6 +8,7 @@ export default async function MyProposalsPage() {
 
   const res = await getAllMyProposals(user._id);
   const proposals = res || [];
+  console.log(proposals);
 
   return (
     <div className="p-6">
@@ -41,7 +42,7 @@ export default async function MyProposalsPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {proposals.slice(0, 5).map((p) => (
+            {proposals.map((p) => (
               <div
                 key={p._id}
                 className="bg-white border rounded-2xl p-4 flex justify-between items-center
@@ -49,7 +50,10 @@ export default async function MyProposalsPage() {
               >
                 {/* LEFT SIDE */}
                 <div>
-                  <h3 className="font-semibold">Note: {p.coverNote}</h3>
+                  <h3 className="font-semibold text-2xl text-cyan-500">
+                    {" "}
+                    {p.taskTitle}
+                  </h3>
 
                   <p className="text-sm text-gray-500">
                     Budget: ${p.proposedBudget} • {p.estimatedDays} days

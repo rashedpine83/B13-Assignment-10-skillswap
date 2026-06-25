@@ -20,15 +20,20 @@ export async function POST(request) {
     const freelancerEmailId = formData.get("freelancerEmailId");
     const clientEmailId = formData.get("clientEmailId");
     const status = formData.get("status");
+    const proposalId = formData.get("proposalId");
 
-    console.log({
-      price,
-      title,
-      taskId,
-      freelancerEmailId,
-      clientEmailId,
-      status,
-    });
+    console.log(
+      {
+        price,
+        title,
+        taskId,
+        freelancerEmailId,
+        clientEmailId,
+        status,
+        proposalId,
+      },
+      "payment",
+    );
 
     const session = await stripe.checkout.sessions.create({
       customer_email: user?.email,
@@ -53,6 +58,7 @@ export async function POST(request) {
         clientEmailId,
         freelancerEmailId,
         status,
+        proposalId,
       },
       mode: "payment",
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,

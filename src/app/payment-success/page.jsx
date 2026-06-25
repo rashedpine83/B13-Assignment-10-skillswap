@@ -33,6 +33,7 @@ export default async function Success({ searchParams }) {
       clientEmailId: metadata.clientEmailId,
       freelancerEmailId: metadata.freelancerEmailId,
       status: metadata.status,
+      proposalId: metadata.proposalId,
     };
     // update the user table about the new plan
     const result = await createPayment(paymentInfo);
