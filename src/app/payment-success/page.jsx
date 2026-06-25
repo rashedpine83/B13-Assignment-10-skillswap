@@ -28,7 +28,7 @@ export default async function Success({ searchParams }) {
       email: customerEmail,
       taskId: metadata.taskId,
       sessionId: session_id,
-      taskTitle: metadata.taskTitle,
+      taskTitle: metadata.title,
       price: metadata.price,
       clientEmailId: metadata.clientEmailId,
       freelancerEmailId: metadata.freelancerEmailId,

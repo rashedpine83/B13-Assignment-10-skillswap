@@ -14,10 +14,9 @@ const MyTasksDetailsPage = async ({ params }) => {
     <div>
       <TaskCard task={task} />
 
-      {task?.status !== "In Progress" ||
-        (task?.status !== "completed" && (
-          <ProposalCard2 proposals={proposals ?? []} />
-        ))}
+      {task?.status !== "In Progress" && task?.status !== "completed" && (
+        <ProposalCard2 proposals={proposals ?? []} />
+      )}
     </div>
   );
 };

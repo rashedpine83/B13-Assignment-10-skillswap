@@ -10,7 +10,7 @@ import {
 } from "react-icons/fi";
 
 export default function MyTasks({ tasks }) {
-  console.log(tasks)
+  console.log(tasks);
   const router = useRouter();
 
   const [search, setSearch] = useState("");
@@ -18,12 +18,12 @@ export default function MyTasks({ tasks }) {
   const [status, setStatus] = useState("");
 
   // Status badge colors
-  const statusColors = {
-    open: "bg-cyan-100 text-cyan-700 border border-cyan-300",
+  const statusColor = {
+    open: "bg--100 text-orange-700 border border-orange-300",
 
     completed: "bg-green-100 text-green-700 border border-green-300",
 
-    "in-progress": "bg-purple-100 text-purple-700 border border-purple-300",
+    "In Progress": "bg-purple-100 text-purple-700 border border-purple-300",
   };
 
   const filteredTasks = useMemo(() => {
@@ -124,16 +124,11 @@ export default function MyTasks({ tasks }) {
       {/* Cards */}
       <div className="grid md:grid-cols-2 gap-5">
         {filteredTasks.map((task) => (
-           
           <div
             key={task._id}
-            onClick={() =>
-              router.push(`/dashboard/client/tasks/${task._id}`)
-             
-            }
+            onClick={() => router.push(`/dashboard/client/tasks/${task._id}`)}
             className="cursor-pointer bg-white rounded-2xl border p-5 hover:shadow-lg transition hover:border-cyan-300"
           >
-            
             {/* Top */}
             <div className="flex justify-between items-start mb-3">
               <div>
@@ -146,7 +141,7 @@ export default function MyTasks({ tasks }) {
 
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  statusColors[task.status]
+                  statusColor[task.status]
                 }`}
               >
                 {task.status}
