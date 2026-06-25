@@ -123,15 +123,15 @@ export default async function FreelancerOverview() {
                 {/* STATUS */}
                 <span
                   className={`text-xs px-3 py-1 rounded-full font-medium
-                  ${
-                    p.status === "pending"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : p.status === "accepted"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                  }`}
+    ${
+      p.status === "pending"
+        ? "bg-yellow-100 text-yellow-700"
+        : p.status === "accepted" || p.status === "In Progress"
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700"
+    }`}
                 >
-                  {p.status}
+                  {p.status === "In Progress" ? "Accepted" : p.status}
                 </span>
               </div>
             ))}

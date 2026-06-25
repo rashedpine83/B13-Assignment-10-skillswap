@@ -3,6 +3,7 @@
 import { deleteTask, updateTask } from "@/lib/actions/tasks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 import {
   FiArrowLeft,
   FiCalendar,
@@ -18,6 +19,9 @@ export default function TaskCard({ task }) {
   const [showEdit, setShowEdit] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // local task status state
+  const [taskStatus, setTaskStatus] = useState(task.status);
+
   const [formData, setFormData] = useState({
     title: task.title || "",
     description: task.description || "",
@@ -26,8 +30,10 @@ export default function TaskCard({ task }) {
 
   const statusColor = {
     open: "bg-cyan-100 text-cyan-700 border border-cyan-300",
+
     completed: "bg-green-100 text-green-700 border border-green-300",
-    "in-progress": "bg-purple-100 text-purple-700 border border-purple-300",
+
+    "In Progress": "bg-purple-100 text-purple-700 border border-purple-300",
   };
 
   const handleDelete = async () => {
@@ -61,6 +67,20 @@ export default function TaskCard({ task }) {
     }
   };
 
+  const handleComplete = async () => {
+    try {
+      await updateTask(task._id, {
+        status: "completed",
+      });
+
+      setTaskStatus("completed");
+
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {/* Back + title */}
@@ -73,57 +93,161 @@ export default function TaskCard({ task }) {
         <h1 className="text-3xl font-bold">{task.title}</h1>
       </div>
 
-      <div className="border rounded-2xl p-6 bg-white shadow-sm">
+      <div className="border rounded-3xl p-8 bg-white shadow-sm">
+        {/* Top */}
+
         <div className="flex justify-between">
           <div className="flex flex-wrap gap-3 items-center">
             <span
-              className={`px-3 py-1 rounded-full text-sm ${
-                statusColor[task.status]
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                statusColor[taskStatus]
               }`}
             >
-              {task.status}
+              {taskStatus}
             </span>
 
-            <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+            <span className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-sm">
               {task.category}
             </span>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 text-gray-500">
               <FiDollarSign />${task.budget}
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 text-gray-500">
               <FiCalendar />
+
               {new Date(task.deadline).toLocaleDateString()}
             </div>
           </div>
         </div>
 
+        {/* Description */}
+
         <p className="mt-6 text-gray-600">{task.description}</p>
 
         <hr className="my-6" />
 
-        <div className="flex gap-3">
-          {task.status === "open" && (
-            <>
-              <button
-                onClick={() => setShowEdit(!showEdit)}
-                className="px-4 py-2 rounded-lg border flex items-center gap-2"
-              >
-                <FiEdit2 />
-                Edit
-              </button>
+        {/* OPEN UI */}
 
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="px-4 py-2 rounded-lg border text-red-500 flex items-center gap-2"
-              >
-                <FiTrash2 />
-                Delete
-              </button>
-            </>
-          )}
-        </div>
+        {taskStatus === "open" && (
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowEdit(!showEdit)}
+              className="
+              px-4
+              py-2
+              rounded-xl
+              border
+              flex
+              items-center
+              gap-2
+            "
+            >
+              <FiEdit2 />
+              Edit
+            </button>
+
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="
+              px-4
+              py-2
+              rounded-xl
+              border
+              text-red-500
+              flex
+              items-center
+              gap-2
+            "
+            >
+              <FiTrash2 />
+              Delete
+            </button>
+          </div>
+        )}
+
+        {/* IN PROGRESS UI */}
+
+        {taskStatus === "In Progress" && (
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleComplete}
+              className="
+              px-6
+              py-3
+              rounded-xl
+              bg-gradient-to-r
+              from-cyan-500
+              to-purple-600
+              text-white
+              font-medium
+              flex
+              items-center
+              gap-2
+              shadow-lg
+              hover:scale-[1.02]
+              transition
+            "
+            >
+              <FiCheckCircle />
+              Mark as Complete
+            </button>
+
+            <span
+              className="
+              px-4
+              py-1
+              rounded-full
+              bg-cyan-100
+              text-cyan-700
+              border
+              border-cyan-300
+              text-sm
+            "
+            >
+              ✓ Paid
+            </span>
+          </div>
+        )}
+
+        {/* COMPLETED UI */}
+
+        {taskStatus === "completed" && (
+          <div className="flex items-center gap-4">
+            <button
+              className="
+              px-6
+              py-3
+              rounded-xl
+              bg-gradient-to-r
+              from-purple-500
+              to-cyan-500
+              text-white
+              font-medium
+              shadow-lg
+            "
+            >
+              Leave a Review
+            </button>
+
+            <span
+              className="
+              px-4
+              py-1
+              rounded-full
+              bg-green-100
+              text-green-700
+              border
+              border-green-300
+            "
+            >
+              Completed
+            </span>
+          </div>
+        )}
+
+        {/* EDIT FORM */}
 
         {showEdit && (
           <div className="mt-8 border-t pt-6">
@@ -138,7 +262,13 @@ export default function TaskCard({ task }) {
                     title: e.target.value,
                   })
                 }
-                className="w-full border rounded-xl px-4 py-3"
+                className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+              "
               />
 
               <textarea
@@ -149,7 +279,13 @@ export default function TaskCard({ task }) {
                     description: e.target.value,
                   })
                 }
-                className="w-full border rounded-xl px-4 py-3"
+                className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+              "
               />
 
               <input
@@ -160,12 +296,26 @@ export default function TaskCard({ task }) {
                     budget: e.target.value,
                   })
                 }
-                className="w-full border rounded-xl px-4 py-3"
+                className="
+                w-full
+                border
+                rounded-xl
+                px-4
+                py-3
+              "
               />
 
               <button
                 type="submit"
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white"
+                className="
+                px-6
+                py-3
+                rounded-xl
+                bg-gradient-to-r
+                from-cyan-500
+                to-purple-600
+                text-white
+              "
               >
                 Save Changes
               </button>
@@ -173,6 +323,8 @@ export default function TaskCard({ task }) {
           </div>
         )}
       </div>
+
+      {/* DELETE MODAL */}
 
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
@@ -184,14 +336,25 @@ export default function TaskCard({ task }) {
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border rounded-lg"
+                className="
+                px-4
+                py-2
+                border
+                rounded-lg
+              "
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-red-500 rounded-lg text-white"
+                className="
+                px-4
+                py-2
+                bg-red-500
+                rounded-lg
+                text-white
+              "
               >
                 Delete
               </button>

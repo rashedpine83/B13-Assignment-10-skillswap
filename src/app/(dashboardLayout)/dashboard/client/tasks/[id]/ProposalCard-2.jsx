@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiCheck, FiX, FiUser, FiInbox } from "react-icons/fi";
-
 import { updateProposalStatus } from "@/lib/actions/proposal";
 
 export default function ProposalCard2({ proposals }) {
@@ -35,7 +34,7 @@ export default function ProposalCard2({ proposals }) {
   };
 
   const handleAccept = (proposal) => {
-    router.push(`/payment/${proposal._id}`);
+    router.push(`/dashboard/client/proposals/${proposal._id}`);
   };
 
   return (
