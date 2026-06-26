@@ -33,44 +33,48 @@ export default function ProposalCards({ proposals }) {
     router.push(`/dashboard/client/proposals/${proposal._id}`);
   };
 
-  return (
-    <div className="space-y-6">
-      {proposalData.map((p) => (
-        <div
-          key={p._id}
-          className="
-          bg-white
-          rounded-3xl
-          border
-          border-gray-200
-          p-6
-          shadow-sm
-          hover:shadow-xl
-          transition-all
-        "
-        >
-          <div className="flex justify-between">
-            {/* LEFT */}
+  // Filter logic:
+  // If same task has an "In Progress" proposal,
+  // show only that proposal and hide others
+  const filteredProposals = proposalData.filter((proposal) => {
+    const inProgressProposal = proposalData.find(
+      (item) =>
+        item.taskTitle === proposal.taskTitle && item.status === "In Progress",
+    );
 
+    if (inProgressProposal) {
+      return inProgressProposal._id === proposal._id;
+    }
+
+    return true;
+  });
+
+  return (
+    <div className="space-y-5">
+      {filteredProposals.map((p) => (
+        <div key={p._id} className="bg-white rounded-2xl shadow-sm border p-6">
+          <div className="flex justify-between gap-6">
+            {/* LEFT */}
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h2 className="font-bold text-lg">{p.taskTitle}</h2>
 
                 <span
                   className={`
-                  px-3 py-1
-                  text-xs
-                  rounded-full
-                  font-medium
-
-                  ${
-                    p.status === "accepted"
-                      ? "bg-green-100 text-green-700"
-                      : p.status === "rejected"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-yellow-100 text-yellow-700"
-                  }
-                `}
+                    px-3 py-1
+                    text-xs
+                    rounded-full
+                    font-medium
+                    ${
+                      p.status === "accepted"
+                        ? "bg-green-100 text-green-700"
+                        : p.status === "rejected"
+                          ? "bg-red-100 text-red-700"
+                          : p.status === "In Progress"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-yellow-100 text-yellow-700"
+                    }
+                  `}
                 >
                   {p.status}
                 </span>
@@ -79,7 +83,7 @@ export default function ProposalCards({ proposals }) {
               <p className="text-gray-500 mt-2">
                 from{" "}
                 <span className="font-medium text-black">
-                  {p.clientEmailId}
+                  {p.freelancerEmailId}
                 </span>
               </p>
 
@@ -112,24 +116,23 @@ export default function ProposalCards({ proposals }) {
             </div>
 
             {/* BUTTONS */}
-
             {p.status === "pending" && (
               <div className="flex gap-3 items-start">
                 <button
-                  type="submit"
+                  type="button"
                   onClick={() => handleAccept(p)}
                   className="
-        bg-green-500
-        hover:bg-green-600
-        text-white
-        px-4
-        py-2
-        rounded-xl
-        flex
-        items-center
-        gap-2
-        text-sm
-      "
+                    bg-green-500
+                    hover:bg-green-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded-xl
+                    flex
+                    items-center
+                    gap-2
+                    text-sm
+                  "
                 >
                   <FiCheck />
                   Accept
@@ -138,17 +141,17 @@ export default function ProposalCards({ proposals }) {
                 <button
                   onClick={() => handleReject(p._id)}
                   className="
-        border
-        text-red-500
-        px-4
-        py-2
-        rounded-xl
-        flex
-        items-center
-        gap-2
-        hover:bg-red-50
-        text-sm
-      "
+                    border
+                    text-red-500
+                    px-4
+                    py-2
+                    rounded-xl
+                    flex
+                    items-center
+                    gap-2
+                    hover:bg-red-50
+                    text-sm
+                  "
                 >
                   <FiX />
                   Reject
@@ -156,20 +159,21 @@ export default function ProposalCards({ proposals }) {
               </div>
             )}
 
+            {/* KEEPING YOUR EXISTING ACCEPTED BADGE */}
             {p.status === "In Progress" && (
               <div className="flex items-start">
                 <span
                   className="
-        px-4
-        py-2
-        rounded-full
-        bg-green-100
-        text-green-700
-        text-sm
-        font-medium
-        border
-        border-green-200
-      "
+                    px-4
+                    py-2
+                    rounded-full
+                    bg-green-100
+                    text-green-700
+                    text-sm
+                    font-medium
+                    border
+                    border-green-200
+                  "
                 >
                   Accepted
                 </span>
@@ -181,3 +185,187 @@ export default function ProposalCards({ proposals }) {
     </div>
   );
 }
+
+// "use client";
+
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { FiDollarSign, FiClock, FiCheck, FiX } from "react-icons/fi";
+// import { updateProposalStatus } from "@/lib/actions/proposal";
+
+// export default function ProposalCards({ proposals }) {
+//   const router = useRouter();
+
+//   const [proposalData, setProposalData] = useState(proposals);
+
+//   const handleReject = async (id) => {
+//     try {
+//       await updateProposalStatus(id, "rejected");
+
+//       setProposalData((prev) =>
+//         prev.map((item) =>
+//           item._id === id
+//             ? {
+//                 ...item,
+//                 status: "rejected",
+//               }
+//             : item,
+//         ),
+//       );
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   const handleAccept = (proposal) => {
+//     router.push(`/dashboard/client/proposals/${proposal._id}`);
+//   };
+
+//   return (
+//     <div className="space-y-6">
+//       {proposalData.map((p) => (
+//         <div
+//           key={p._id}
+//           className="
+//           bg-white
+//           rounded-3xl
+//           border
+//           border-gray-200
+//           p-6
+//           shadow-sm
+//           hover:shadow-xl
+//           transition-all
+//         "
+//         >
+//           <div className="flex justify-between">
+//             {/* LEFT */}
+
+//             <div className="flex-1">
+//               <div className="flex items-center gap-3">
+//                 <h2 className="font-bold text-lg">{p.taskTitle}</h2>
+
+//                 <span
+//                   className={`
+//                   px-3 py-1
+//                   text-xs
+//                   rounded-full
+//                   font-medium
+
+//                   ${
+//                     p.status === "accepted"
+//                       ? "bg-green-100 text-green-700"
+//                       : p.status === "rejected"
+//                         ? "bg-red-100 text-red-700"
+//                         : "bg-yellow-100 text-yellow-700"
+//                   }
+//                 `}
+//                 >
+//                   {p.status}
+//                 </span>
+//               </div>
+
+//               <p className="text-gray-500 mt-2">
+//                 from{" "}
+//                 <span className="font-medium text-black">
+//                   {p.freelancerEmailId}
+//                 </span>
+//               </p>
+
+//               <div className="bg-gray-50 rounded-xl p-3 mt-4 text-gray-500">
+//                 {p.coverNote}
+//               </div>
+
+//               <div className="flex gap-6 mt-5 text-sm text-gray-600">
+//                 <div className="flex items-center gap-1">
+//                   <FiDollarSign />
+//                   Bid:
+//                   <span className="font-bold text-yellow-500">
+//                     ${p.proposedBudget}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex items-center gap-1">
+//                   <FiClock />
+//                   {p.estimatedDays} days
+//                 </div>
+
+//                 <div>
+//                   {new Date(p.createdAt).toLocaleDateString("en-US", {
+//                     month: "short",
+//                     day: "numeric",
+//                     year: "numeric",
+//                   })}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* BUTTONS */}
+
+//             {p.status === "pending" && (
+//               <div className="flex gap-3 items-start">
+//                 <button
+//                   type="submit"
+//                   onClick={() => handleAccept(p)}
+//                   className="
+//         bg-green-500
+//         hover:bg-green-600
+//         text-white
+//         px-4
+//         py-2
+//         rounded-xl
+//         flex
+//         items-center
+//         gap-2
+//         text-sm
+//       "
+//                 >
+//                   <FiCheck />
+//                   Accept
+//                 </button>
+
+//                 <button
+//                   onClick={() => handleReject(p._id)}
+//                   className="
+//         border
+//         text-red-500
+//         px-4
+//         py-2
+//         rounded-xl
+//         flex
+//         items-center
+//         gap-2
+//         hover:bg-red-50
+//         text-sm
+//       "
+//                 >
+//                   <FiX />
+//                   Reject
+//                 </button>
+//               </div>
+//             )}
+
+//             {p.status === "In Progress" && (
+//               <div className="flex items-start">
+//                 <span
+//                   className="
+//         px-4
+//         py-2
+//         rounded-full
+//         bg-green-100
+//         text-green-700
+//         text-sm
+//         font-medium
+//         border
+//         border-green-200
+//       "
+//                 >
+//                   Accepted
+//                 </span>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }

@@ -38,7 +38,9 @@ export default function BrowseTasksClient({ tasks }) {
     <div className="container mx-auto px-6 py-8">
       {/* Header */}
 
-      <h1 className="text-4xl font-bold">Browse Tasks</h1>
+      <h1 className="text-4xl font-bold bg-linear-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
+        Browse Tasks
+      </h1>
 
       <p className="text-gray-500 mt-2">
         Find open tasks that match your skills

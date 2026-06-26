@@ -40,7 +40,7 @@ export default function BrowseFreelancersPage() {
     <div className="p-6 container mx-auto pt-20">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold bg-linear-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
           Browse Freelancers
         </h1>
         <p className="text-gray-500">

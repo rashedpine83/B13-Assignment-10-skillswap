@@ -11,11 +11,11 @@ export default async function ClientProposalsPage() {
   return (
     <div className="p-10">
       <div className="mb-8">
-        <h1 className=" text-4xl font-bold bg-gradient-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
+        <h1 className=" pb-2 text-4xl font-bold bg-gradient-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
           Manage Proposals
         </h1>
 
-        <p className="text-gray-500 mt-1">
+        <p className="text-gray-500 mt-2">
           Review and respond to freelancer proposals
         </p>
       </div>

@@ -18,7 +18,6 @@ export default async function ClientOverview() {
 
   const emailId = user?.email;
   const tasksData = await getTaskByClientEmail(user?.email);
-  // const tasksData = await getClientTasks(emailId);
 
   const paymentData = await getPaymentsByEmail(user?.email);
 
