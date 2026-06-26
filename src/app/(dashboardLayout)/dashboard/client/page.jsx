@@ -10,17 +10,17 @@ import Link from "next/link";
 import { FiCalendar, FiDollarSign } from "react-icons/fi";
 
 import { getUserSession } from "@/lib/core/session";
-import { getClientPayment } from "@/lib/api/payment";
-import { getClientTasks } from "@/lib/api/tasks";
 
+import { getTaskByClientEmail } from "@/lib/api/tasks";
+import { getPaymentsByEmail } from "@/lib/api/payment";
 export default async function ClientOverview() {
   const user = await getUserSession();
 
   const emailId = user?.email;
+  const tasksData = await getTaskByClientEmail(user?.email);
+  // const tasksData = await getClientTasks(emailId);
 
-  const tasksData = await getClientTasks(emailId);
-
-  const paymentData = await getClientPayment();
+  const paymentData = await getPaymentsByEmail(user?.email);
 
   // Total Tasks
   const totalTasks = tasksData?.length || 0;
@@ -74,12 +74,14 @@ export default async function ClientOverview() {
   ];
 
   return (
-    <div>
+    <div className="container p-10">
       {/* Header */}
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-5 mb-10">
         <div>
-          <h1 className="text-4xl font-bold">Client Dashboard</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
+            Client Dashboard
+          </h1>
 
           <p className="text-gray-500 mt-2">
             Manage your tasks and find talented freelancers
@@ -212,7 +214,7 @@ export default async function ClientOverview() {
                         className={`px-3 py-1 rounded-full text-xs font-medium
                         ${
                           task.status === "open"
-                            ? "bg-cyan-100 text-cyan-700 border border-cyan-300"
+                            ? "bg-orange-100 text-orange-700 border border-orange-300"
                             : task.status === "completed"
                               ? "bg-green-100 text-green-700 border border-green-300"
                               : "bg-purple-100 text-purple-700 border border-purple-300"

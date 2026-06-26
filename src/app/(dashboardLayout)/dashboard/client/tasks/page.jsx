@@ -1,11 +1,11 @@
 import MyTasks from "@/components/Dashboard/MyTasks";
-import { getClientTasks } from "@/lib/api/tasks";
+import { getTaskByClientEmail } from "@/lib/api/tasks";
+
 import { getUserSession } from "@/lib/core/session";
 
-export default async function Page() {
+export default async function MyTaskPage() {
   const user = await getUserSession();
 
-  const emailId = user?.email;
-  const tasksData = await getClientTasks(emailId);
+  const tasksData = await getTaskByClientEmail(user?.email);
   return <MyTasks tasks={tasksData} />;
 }

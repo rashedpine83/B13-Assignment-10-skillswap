@@ -51,7 +51,9 @@ export default function MyTasks({ tasks }) {
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h1 className="text-3xl font-bold">My Tasks</h1>
+          <h1 className="text-4xl font-bold bg-linear-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
+            My Tasks
+          </h1>
 
           <p className="text-gray-500">Manage all your posted tasks</p>
         </div>
@@ -122,50 +124,53 @@ export default function MyTasks({ tasks }) {
       </div>
 
       {/* Cards */}
+
       <div className="grid md:grid-cols-2 gap-5">
-        {filteredTasks.map((task) => (
-          <div
-            key={task._id}
-            onClick={() => router.push(`/dashboard/client/tasks/${task._id}`)}
-            className="cursor-pointer bg-white rounded-2xl border p-5 hover:shadow-lg transition hover:border-cyan-300"
-          >
-            {/* Top */}
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <h2 className="font-bold text-lg">{task.title}</h2>
+        {[...filteredTasks]
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((task) => (
+            <div
+              key={task._id}
+              onClick={() => router.push(`/dashboard/client/tasks/${task._id}`)}
+              className="cursor-pointer bg-white rounded-2xl border p-5 hover:shadow-lg transition hover:border-cyan-300"
+            >
+              {/* Top */}
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h2 className="font-bold text-lg">{task.title}</h2>
 
-                <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                  {task.description}
-                </p>
+                  <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                    {task.description}
+                  </p>
+                </div>
+
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    statusColor[task.status]
+                  }`}
+                >
+                  {task.status}
+                </span>
               </div>
 
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  statusColor[task.status]
-                }`}
-              >
-                {task.status}
-              </span>
+              {/* Bottom */}
+              <div className="flex flex-wrap items-center gap-4 mt-5 text-sm text-gray-600">
+                <span className="bg-gray-100 px-3 py-1 rounded-full">
+                  {task.category}
+                </span>
+
+                <div className="flex items-center gap-1">
+                  <FiDollarSign />${task.budget}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <FiCalendar />
+
+                  {new Date(task.deadline).toLocaleDateString()}
+                </div>
+              </div>
             </div>
-
-            {/* Bottom */}
-            <div className="flex flex-wrap items-center gap-4 mt-5 text-sm text-gray-600">
-              <span className="bg-gray-100 px-3 py-1 rounded-full">
-                {task.category}
-              </span>
-
-              <div className="flex items-center gap-1">
-                <FiDollarSign />${task.budget}
-              </div>
-
-              <div className="flex items-center gap-1">
-                <FiCalendar />
-
-                {new Date(task.deadline).toLocaleDateString()}
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {filteredTasks.length === 0 && (

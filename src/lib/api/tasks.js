@@ -21,3 +21,7 @@ export const getTask = async (query = "") => {
 export const getSingleTask = async (id) => {
   return serverFetch(`/api/tasks/${id}`);
 };
+
+export const getTaskByClientEmail = async (email) => {
+  return serverFetch(`/api/tasks/email?email=${encodeURIComponent(email)}`);
+};

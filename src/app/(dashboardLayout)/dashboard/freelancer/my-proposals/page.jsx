@@ -1,14 +1,15 @@
 import { FiFileText, FiSearch } from "react-icons/fi";
 import Link from "next/link";
-import { getAllMyProposals } from "@/lib/api/proposals";
+import { getProposalsByEmail } from "@/lib/api/proposals";
 import { getUserSession } from "@/lib/core/session";
 
 export default async function MyProposalsPage() {
   const user = await getUserSession();
 
-  const res = await getAllMyProposals(user._id);
+  const res = await getProposalsByEmail(user?.email);
+  console.log("freelancer", res);
+
   const proposals = res || [];
-  console.log(proposals);
 
   return (
     <div className="p-6">

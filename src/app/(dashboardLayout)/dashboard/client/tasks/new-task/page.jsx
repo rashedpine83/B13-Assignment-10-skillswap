@@ -79,7 +79,7 @@ export default function CreateTaskPage() {
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
               Post a New Task
             </h1>
 

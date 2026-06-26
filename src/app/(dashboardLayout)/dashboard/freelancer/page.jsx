@@ -1,12 +1,13 @@
 import { FiFileText, FiSearch } from "react-icons/fi";
 import Link from "next/link";
-import { getProposals } from "@/lib/api/proposals";
+
 import { getUserSession } from "@/lib/core/session";
+import { getProposalsByEmail } from "@/lib/api/proposals";
 
 export default async function FreelancerOverview() {
   const user = await getUserSession();
+  const res = await getProposalsByEmail(user?.email);
 
-  const res = await getProposals(user._id);
   const proposals = res || [];
 
   // ===== STATS =====

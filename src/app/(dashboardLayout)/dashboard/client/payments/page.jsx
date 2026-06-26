@@ -1,8 +1,12 @@
-import { getClientPayment } from "@/lib/api/payment";
+// import { getClientPayment } from "@/lib/api/payment";
+import { getPaymentsByEmail } from "@/lib/api/payment";
+import { getUserSession } from "@/lib/core/session";
 import { CreditCard } from "lucide-react";
 
 const ClientPaymentHistory = async () => {
-  const paymentData = await getClientPayment();
+  const user = await getUserSession();
+  const paymentData = await getPaymentsByEmail(user?.email);
+  console.log("paymentData", paymentData);
 
   // Calculate total spent
   const totalSpent =
@@ -22,7 +26,7 @@ const ClientPaymentHistory = async () => {
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-700 via-pink-500 to-orange-400 bg-clip-text text-transparent">
                 Payment History
               </h1>
 
@@ -74,7 +78,7 @@ const ClientPaymentHistory = async () => {
                       {/* Task */}
                       <td className="px-6 py-5">
                         <div className="font-medium text-gray-900">
-                          {payment.title}
+                          {payment.taskTitle}
                         </div>
                       </td>
 
